@@ -8,21 +8,25 @@ export default function SearchBox({updateInfo}){
 
 
 
-    let getWeatherInfo=async (city)=>{
-        let response = await fetch(`${cityUrl}?q=${city}&appid=${apiKey}&units=metric`);
-        let jsonResponse = await response.json();
-        
-        let result = {
-            city: city,
-            temp: jsonResponse.main.temp,
-            tempMin: jsonResponse.main.temp_min,
-            tempMax: jsonResponse.main.humidity,
-            feelsLike : jsonResponse.main.feels_like,
-            weather: jsonResponse.weather[0].description
+    let getWeatherInfo = async (city) => {
+        try {
+            let response = await fetch(`${cityUrl}?q=${city}&appid=${apiKey}&units=metric`);
+            if (!response.ok) throw new Error("City not found");
+            let jsonResponse = await response.json();
+            return {
+                city: city,
+                temp: jsonResponse.main.temp,
+                tempMin: jsonResponse.main.temp_min,
+                tempMax: jsonResponse.main.temp_max,
+                feelsLike: jsonResponse.main.feels_like,
+                weather: jsonResponse.weather[0].description,
+            };
+        } catch (error) {
+            console.error("Error fetching weather data:", error.message);
+            return null; 
         }
-        console.log(result);
-        return result;
-    }
+    };
+    
 
     let [city,setCity] = useState("");
     let handleEvent = (e)=>{

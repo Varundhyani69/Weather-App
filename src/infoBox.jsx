@@ -18,7 +18,8 @@ export default function InfoBox({info}){
                 <CardMedia
                 component="img"
                 height="140"
-                image={info.humidity >80?HUM_URL:info.temp>15?HOT_URL: COLD_URL}
+                image={(info?.humidity > 80 ? HUM_URL : info?.temp > 15 ? HOT_URL : COLD_URL) || ImageUrl}
+
                 alt="green iguana"
                 />
                 <CardContent>
